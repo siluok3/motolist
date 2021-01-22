@@ -6,6 +6,7 @@ import { auth } from '../firebase'
 export interface AuthContextType {
   currentUser: firebase.User|null;
   signup(email: string, password: string): Promise<firebase.auth.UserCredential>;  
+  login(email: string, password: string): Promise<firebase.auth.UserCredential>;  
 }
 
 export const AuthContext = createContext<Partial<AuthContextType>>({})
@@ -15,6 +16,7 @@ export const AuthProvider: React.FC = ({children}) => {
   const [loading, setLoading] = useState<boolean>(true)
 
   const signup = (email: string, password: string) => auth.createUserWithEmailAndPassword(email, password)
+  const login = (email: string, password: string) => auth.signInWithEmailAndPassword(email, password)
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
@@ -26,7 +28,7 @@ export const AuthProvider: React.FC = ({children}) => {
   }, [])
 
   return (
-    <AuthContext.Provider value={{currentUser, signup}}>
+    <AuthContext.Provider value={{currentUser, signup, login}}>
       {!loading && children}
     </AuthContext.Provider>
   )

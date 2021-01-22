@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function Signup() {
+export default function Login() {
   const classes = useStyles()
 
   const authContext: Partial<AuthContextType> = useContext(AuthContext)
@@ -26,21 +26,17 @@ export default function Signup() {
 
   const emailRef = useRef(null)
   const passwordRef = useRef(null)
-  const passwordConfirmRef = useRef(null)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    if (passwordRef.current.value !== passwordConfirmRef.current.value) {
-      return setError('Passwords are not equal 🤪')
-    }
     if (emailRef && emailRef.current && passwordRef && passwordRef.current) {
       try {
         setError('')
         setLoading(true)
-        await authContext.signup(emailRef.current.value, passwordRef.current.value)
+        await authContext.login(emailRef.current.value, passwordRef.current.value)
       } catch (error) {
-        setError(error.message ?? 'Failed to create an account')
+        setError(error.message ?? 'Failed to login')
       }
 
       setLoading(false)
@@ -49,7 +45,7 @@ export default function Signup() {
 
   return (
     <Container className={classes.container} maxWidth="xs">
-      <h2>Sign up</h2>
+      <h2>Login</h2>
       {error && <Alert severity="error">{error}</Alert>}
       <form onSubmit={handleSubmit}>
         <Grid container spacing={3}>
@@ -76,17 +72,6 @@ export default function Signup() {
                   required
                 />
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label="Confirm Password"
-                  inputRef={passwordConfirmRef}
-                  size="small"
-                  type="password"
-                  variant="outlined"
-                  required
-                />
-              </Grid>
             </Grid>
           </Grid>
           <Grid item xs={12}>
@@ -97,13 +82,13 @@ export default function Signup() {
               type="submit"
               variant="contained"
             >
-              Sign Up
+              Log In
             </Button>
           </Grid>
         </Grid>
       </form>
       <div>
-        Already have an account? <Link to="/login">Log In</Link>
+        Need an account? <Link to="/signup">Sign up</Link>
       </div>
     </Container>
   )
