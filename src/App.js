@@ -2,11 +2,14 @@ import React from 'react';
 
 import MainDashboard from './containers/MainDashboard/MainDashboard';
 import Signup from './components/Signup/Signup';
+import { AuthProvider } from './contexts/AuthContext'
 
 function App() {
   return (
-    // <MainDashboard />
-    <Signup />
+    <AuthProvider>
+      {/* <MainDashboard /> */}
+      <Signup />
+    </AuthProvider>
   );
 }
 
