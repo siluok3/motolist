@@ -12,12 +12,14 @@ export const AuthContext = createContext<Partial<AuthContextType>>({})
 
 export const AuthProvider: React.FC = ({children}) => {
   const [currentUser, setCurrentUser] = useState<firebase.User|null>(null)
+  const [loading, setLoading] = useState<boolean>(true)
 
   const signup = (email: string, password: string) => auth.createUserWithEmailAndPassword(email, password)
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       setCurrentUser(user)
+      setLoading(false)
     })
 
     return unsubscribe
@@ -25,7 +27,7 @@ export const AuthProvider: React.FC = ({children}) => {
 
   return (
     <AuthContext.Provider value={{currentUser, signup}}>
-      {children}
+      {!loading && children}
     </AuthContext.Provider>
   )
 }

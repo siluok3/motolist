@@ -29,7 +29,7 @@ export default function Signup() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    
+
     if (passwordRef.current.value !== passwordConfirmRef.current.value) {
       return setError('Passwords are not equal 🤪')
     }
@@ -38,8 +38,8 @@ export default function Signup() {
         setError('')
         setLoading(true)
         await authContext.signup(emailRef.current.value, passwordRef.current.value)
-      } catch {
-        setError('Failed to create an account')
+      } catch (error) {
+        setError(error.message ?? 'Failed to create an account')
       }
 
       setLoading(false)
